@@ -4,7 +4,7 @@ local M = {}
 local upower_enumerate_devices = "upower -e"
 local upower_device_info = "upower -i "
 
-local config = require("battery_upower.config")
+local config = require("upower.config")
 
 local max_battery_samples = 10
 local min_battery_samples = 1
