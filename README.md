@@ -1,4 +1,4 @@
-Battery status for Chromebooks that can use UPower to get status reports.
+Battery status for Chromebooks using UPower.
 
 Requires upower:
 ```
@@ -9,12 +9,16 @@ Install plugin with Lazy:
 ```
 return {
   "git@github.com:coreyb-git/upower.nvim",
+  dependencies = {
+    "rcarriga/nvim-notify"
+  },
   opts = {
     --enabled = false,
   },
 }
 ```
-To use with Lualine add this component:
+
+To use with Lualine add the component:
 ```
 lualine_z = {
   { "upower" }, -- combined icon and text
