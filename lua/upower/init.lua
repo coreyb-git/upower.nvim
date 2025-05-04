@@ -1,5 +1,6 @@
---fixme: this no longer works on main pc after moving debug code
 local M = {}
+
+local notify_opts = { title = "Battery Info", timeout = 10000 }
 
 local upower_enumerate_devices = "upower -e"
 local upower_device_info = "upower -i "
@@ -65,20 +66,20 @@ local function enumerate_devices()
 	end
 	if state.device_string == "" then
 		state.has_battery = false
-		vim.notify("No battery detected", vim.log.levels.INFO, { title = "Battery Info", timeout = 10000 })
+		vim.notify("No battery detected", vim.log.levels.INFO, notify_opts)
 	end
 end
 
 local function handle_alerts()
 	if state.has_battery then
 		if (state.percentage == 100) and (state.previous_percentage ~= 100) then
-			vim.notify("Battery is fully charged", vim.log.levels.INFO)
+			vim.notify("Battery is fully charged", vim.log.levels.INFO, notify_opts)
 		end
 		if
 			(state.percentage >= config.alert_battery_level_high)
 			and (state.previous_percentage < config.alert_battery_level_high)
 		then
-			vim.notify("Battery level high", vim.log.levels.INFO)
+			vim.notify("Battery level high", vim.log.levels.INFO, notify_opts)
 		end
 		if
 			(state.percentage <= config.alert_battery_level_low)
