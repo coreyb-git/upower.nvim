@@ -14,13 +14,13 @@ local state = {
 	has_battery = true,
 	device_string = "", -- The device id string that upower uses to identify it
 	charging = false,
-	percentage = 0,
-	previous_percentage = 0,
+	percentage = 50,
+	previous_percentage = 50, --trigger alerts for either direction
 	latest_time_remaining = 0,
 	battery_samples = {},
 	average_time_remaining = 0,
 	anim_state = 0,
-	anim_icon = "",
+	anim_icon = config.icons_battery_charging.reallylow,
 	status_icon = "",
 	status_text = "",
 }
@@ -85,11 +85,11 @@ local function handle_alerts()
 			(state.percentage <= config.alert_battery_level_low)
 			and (state.previous_percentage > config.alert_battery_level_low)
 		then
-			vim.notify("Battery level low", vim.log.levels.WARN)
+			vim.notify("Battery level low", vim.log.levels.WARN, notify_opts)
 		end
 		-- critical alert every time this runs, not just when first entering the critical range
 		if state.percentage <= config.alert_battery_level_critical then
-			vim.notify("Battery level critical!", vim.log.levels.ERROR)
+			vim.notify("Battery level critical!", vim.log.levels.ERROR, notify_opts)
 		end
 	end
 end
@@ -276,6 +276,8 @@ function M.timer_loop()
 end
 
 function M.init()
+	vim.notify = require("notify")
+
 	enumerate_devices()
 	--	update_state()
 	--	update_status()
