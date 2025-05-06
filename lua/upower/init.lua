@@ -292,11 +292,11 @@ function M.get_status_text()
 end
 
 function M.is_below_level_low()
-	return state.percentage < config.alert_battery_level_low
+	return state.percentage <= config.alert_battery_level_low
 end
 
 function M.is_below_level_critical()
-	return state.percentage < config.alert_battery_level_critical
+	return state.percentage <= config.alert_battery_level_critical
 end
 
 function M.is_charging()

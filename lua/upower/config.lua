@@ -14,7 +14,7 @@ local charging = {
 	reallylow = "󰢟 ",
 }
 
-local levels = {
+local levels = { --if above
 	fullycharged = 100,
 	high = 66,
 	medium = 33,
@@ -39,6 +39,7 @@ return {
 	icons_battery_charging = charging,
 	icon_battery_missing = "󱉞 ",
 
+	--alerts, and also used by the "is below" bool functions
 	alert_battery_level_high = 80,
 	alert_battery_level_low = 20,
 	alert_battery_level_critical = 10,
