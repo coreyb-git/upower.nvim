@@ -71,26 +71,33 @@ local function enumerate_devices()
 end
 
 local function handle_alerts()
+	local msg = ""
+	local level = vim.log.levels.INFO
 	if state.has_battery then
 		if (state.percentage == 100) and (state.previous_percentage ~= 100) then
-			vim.notify("Battery is fully charged", vim.log.levels.INFO, notify_opts)
+			msg = "Battery is fully charged"
 		end
 		if
 			(state.percentage >= config.alert_battery_level_high)
 			and (state.previous_percentage < config.alert_battery_level_high)
 		then
-			vim.notify("Battery level high", vim.log.levels.INFO, notify_opts)
+			msg = "Battery level high"
 		end
 		if
 			(state.percentage <= config.alert_battery_level_low)
 			and (state.previous_percentage > config.alert_battery_level_low)
 		then
-			vim.notify("Battery level low", vim.log.levels.WARN, notify_opts)
+			msg = "Battery level low"
+			level = vim.log.levels.WARN
 		end
 		-- critical alert every time this runs, not just when first entering the critical range
 		if state.percentage <= config.alert_battery_level_critical then
-			vim.notify("Battery level critical!", vim.log.levels.ERROR, notify_opts)
+			msg = "Battery level critical!"
+			level = vim.log.levels.ERROR
 		end
+	end
+	if msg ~= "" then
+		vim.notify(msg, level, notify_opts)
 	end
 end
 
