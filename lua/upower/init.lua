@@ -74,15 +74,12 @@ local function handle_alerts()
 	local msg = ""
 	local level = vim.log.levels.INFO
 	if state.has_battery then
-		if (state.percentage == 100) and (state.previous_percentage ~= 100) then
-			msg = "Battery is fully charged"
+		-- critical alert every time this runs, not just when first entering the critical range
+		if state.percentage <= config.alert_battery_level_critical then
+			msg = "Battery level critical!"
+			level = vim.log.levels.ERROR
 		end
-		if
-			(state.percentage >= config.alert_battery_level_high)
-			and (state.previous_percentage < config.alert_battery_level_high)
-		then
-			msg = "Battery level high"
-		end
+
 		if
 			(state.percentage <= config.alert_battery_level_low)
 			and (state.previous_percentage > config.alert_battery_level_low)
@@ -90,10 +87,15 @@ local function handle_alerts()
 			msg = "Battery level low"
 			level = vim.log.levels.WARN
 		end
-		-- critical alert every time this runs, not just when first entering the critical range
-		if state.percentage <= config.alert_battery_level_critical then
-			msg = "Battery level critical!"
-			level = vim.log.levels.ERROR
+		if
+			(state.percentage >= config.alert_battery_level_high)
+			and (state.previous_percentage < config.alert_battery_level_high)
+		then
+			msg = "Battery level high"
+		end
+
+		if (state.percentage == 100) and (state.previous_percentage ~= 100) then
+			msg = "Battery is fully charged"
 		end
 	end
 	if msg ~= "" then
