@@ -314,6 +314,10 @@ function M.is_charging()
 	return state.charging
 end
 
+function M.is_fully_charged()
+	return state.percentage > 99
+end
+
 M.init()
 
 return M
